@@ -365,47 +365,60 @@ above 100 percent and not tied with any other students.
  | 1/27 |  Networking Background (Architecture) | Assigned: reading 3 |
 | | | Due: reading 2 |
  | 2/1 |  Classic Network Security Problems | Due: reading 3 |
+| | | Due week 1 discussion (reading 1) |
 | 2/3 |  In class Networking/Wireshark Exercises | Assigned: lab 1, reading 4 |
 | 2/8 |  Security Objectives and Ross Anderson's "Security Policies" | Assigned: reading 5 |
 | | | Due: reading 4 |
+| | | Due: week 2 discussion (reading 2 and 3) |
  | 2/10 |  Authentication | Assigned: reading 6 |
-| | | Due: reading 5, lab 1 |
- | 2/15 |  Authorization and Access Controls | Assigned: reading 7, lab 2 |
+| | | Due: reading 5 |
+| 2/15 | Ice-pocalypse 2021 |
+| 2/17 | Ice-pocalypse 2021 |
+| 2/22 | Ice-pocalypse 2021 | 
+ | 2/24 |  Authorization and Access Controls | Assigned: reading 7, lab 2 |
+| | | Due: Lab 1 |
 | | | Due: reading 6 |
- | 2/17 |  Intro to Crypto | Assigned: reading 8 |
+| | | Due: week 3 discussion (reading 4) | 
+ | 3/1 |  Intro to Crypto | Assigned: reading 8 |
 | | | Due: reading 7 |
- | 2/22 |  Symmetric Crypto | Assigned: reading 9 |
+| | | Due: week 4 discussion (reading 5 and 6) |
+ | 3/3 |  Symmetric Crypto | Assigned: reading 9 |
 | | | Due: reading 8 |
- | 2/24 |  Asymmetric Crypto | Assigned: reading 10 |
+ | 3/8 |  Asymmetric Crypto | Assigned: reading 10 |
 | | | Due: reading 9 |
- | 3/1 |  TLS and Kerberos | Assigned: reading 11, lab 3 |
+| | | Due: week 5 discussion (reading 7) |
+ | 3/10 |  TLS and Kerberos, PKI | Assigned: reading 11, reading 12 |
 | | | Due: reading 10, lab 2 |
- | 3/3 |  PKI | Due: reading 11 |
-| 3/8 |  EXAM PREP |  |
-| 3/10 |  MIDTERM EXAM 1 | Assigned: reading 12 |
-| 3/22 |  Malware - Viruses, Trojans, Ransomware | Assigned: reading 13 |
-| | | Due: reading 12 |
- | 3/24 |  Malware Detection Challenges | Assigned: reading 14 |
+| 3/22 |  Guest lecture from Crypsis Group | Assigned: reading 13, lab 3 |
+| | | Due: reading 11, 12 |
+| | | Due: week 6 discussion (reading 8 & 9) |
+ | 3/24 |  Malware and Malware Detection Challenges | Assigned: reading 14 |
 | | | Due: reading 13 |
  | 3/29 |  Host Security and Vulnerabilities | Assigned: reading 15 |
-| | | Due: reading 14, lab 3 |
+| | | Due: reading 14 |
+| | | Due: week 7 discussion (reading 10, 11, & 12) |
  | 3/31 |  Why Vulnerabilities are Hard | Assigned: lab 4 |
-| | | Due: reading 15 |
+| | | Due: reading 15, lab 3 |
  | 4/5 |  Perimeter Security Technologies | Assigned: reading 17 |
+ | | | Due: week 8 discussion (reading 13 & 14)
 | 4/7 |  Perimeter Security Architectures | Assigned: reading 18 |
 | | | Due: reading 17 |
  | 4/12 |  HTTP and the World Wide Web | Assigned: reading 19 |
 | | | Due: reading 18 |
+| | | Due: Week 9 discussion (reading 15) |
  | 4/14 |  Web Threats and Defenses I | Assigned: reading 20 |
 | | | Due: reading 19, lab 4 |
  | 4/19 |  Web Threats and Defenses II | Assigned: reading 21, lab 5 |
 | | | Due: reading 20 |
+| | | Due: Week 10 discussion (reading 17 & 18) | 
  | 4/21 |  Overlay Network Threats - Email, Social Media | Assigned: reading 22 |
 | | | Due: reading 21 |
  | 4/26 |  Advanced Topics - Zero Trust | Assigned: reading 23 |
 | | | Due: reading 22 |
+| | | Due: Week 11 discussion (reading 19 & 20) | 
  | 4/28 |  Advanced Topics - Blockchain/Consensus | Due: reading 23 |
 | 5/3 |  EXAM REVIEW | Due: lab 5 |
+| | | Due: Week 12 discussion (reading 21 and 22) |
 | 5/5 |  MIDTERM EXAM 2 |  |
 
 # Readings
