@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from .models import NewsListing
 
 class UpdateUserForm(forms.Form):
@@ -49,13 +50,13 @@ class CreateNewsForm(forms.Form):
 class UpdateNewsForm(forms.Form):
     update_news_select = forms.ModelChoiceField(
         label="Update News",
-        queryset=NewsListing.objects.all(),
+        queryset=None,
         required=False)
     update_news_query   = forms.CharField(label="Update Query", required=False)
     update_news_sources = forms.CharField(label="Update Sources", required=False)
     update_news_secrecy = forms.IntegerField(label="Update Secrecy", required=False)
     
-    def __init__(self, *args, **kargs):
+    def __init__(self, *args,  queryset=None, **kargs,):
         super().__init__(*args, **kargs)
         # STUDENT TODO
         # you should change the "queryset" in update_news_select to be None.
@@ -67,6 +68,8 @@ class UpdateNewsForm(forms.Form):
         #
         # This form is constructed in views.py. Modify this constructor to
         # accept the passed-in (filtered) queryset.
+
+        self.fields['update_news_select'].queryset = queryset
     
     def clean(self):
         cleaned_data = super().clean()
@@ -80,4 +83,9 @@ class UpdateNewsForm(forms.Form):
         # and secrecy.
         # Return a "ValidationError(<err msg>)" if something 
         # is wrong
+        if cleaned_data['update_news_secrecy'] < cleaned_data['update_news_select'].secrecy:
+            print("VALIDATION ERROR: New secrecy lower than current secrecy for item", cleaned_data['update_news_select'])
+            raise ValidationError("New secrecy lower than current secrecy for item")
+        print(cleaned_data)
+        
         return cleaned_data
