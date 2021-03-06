@@ -3,13 +3,14 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import NewsListing
 
+
 class UpdateUserForm(forms.Form):
     update_user_select = forms.ModelChoiceField(
-        label="Username",
-        queryset=User.objects.filter(is_superuser=False))
-    update_user_token    = forms.CharField(label="Token ID", required=False)
-    update_user_secrecy  = forms.IntegerField(label="Secrecy Level")
-    
+        label="Username", queryset=User.objects.filter(is_superuser=False)
+    )
+    update_user_token = forms.CharField(label="Token ID", required=False)
+    update_user_secrecy = forms.IntegerField(label="Secrecy Level")
+
     def clean(self):
         # STUDENT TODO
         # This is where the "update user" form is validated.
@@ -19,20 +20,21 @@ class UpdateUserForm(forms.Form):
         # form value. You need to update this method to
         # enforce the security policies related to tokens
         # and secrecy.
-        # Return a "ValidationError(<err msg>)" if something 
+        # Return a "ValidationError(<err msg>)" if something
         # is wrong
         cleaned_data = super().clean()
         return cleaned_data
-        
+
+
 class CreateNewsForm(forms.Form):
     new_news_query = forms.CharField(label="New Query", required=False)
     new_news_sources = forms.CharField(label="Sources", required=False)
     new_news_secrecy = forms.IntegerField(label="Secrecy Level", required=False)
-    
-    def __init__(self, *args, **kargs):
+
+    def __init__(self, user_secrecy, *args, **kargs):
         super().__init__(*args, **kargs)
-        self.user_secrecy = 0
-    
+        self.user_secrecy = user_secrecy
+
     def clean(self):
         # STUDENT TODO
         # This is where newslisting update form is validated.
@@ -42,21 +44,35 @@ class CreateNewsForm(forms.Form):
         # form value. You need to update this method to
         # enforce the security policies related to tokens
         # and secrecy.
-        # Return a "ValidationError(<err msg>)" if something 
+        # Return a "ValidationError(<err msg>)" if something
         # is wrong
         cleaned_data = super().clean()
+        if (
+            cleaned_data["new_news_secrecy"] != None
+            and cleaned_data["new_news_secrecy"] < self.user_secrecy
+        ):
+            print(
+                "VALIDATION ERROR: New secrecy lower than current secrecy for created item"
+            )
+            raise ValidationError("New secrecy lower than current secrecy for item")
         return cleaned_data
-        
+
+
 class UpdateNewsForm(forms.Form):
     update_news_select = forms.ModelChoiceField(
-        label="Update News",
-        queryset=None,
-        required=False)
-    update_news_query   = forms.CharField(label="Update Query", required=False)
+        label="Update News", queryset=None, required=False
+    )
+    update_news_query = forms.CharField(label="Update Query", required=False)
     update_news_sources = forms.CharField(label="Update Sources", required=False)
     update_news_secrecy = forms.IntegerField(label="Update Secrecy", required=False)
-    
-    def __init__(self, *args,  queryset=None, **kargs,):
+
+    def __init__(
+        self,
+        user_secrecy,
+        queryset,
+        *args,
+        **kargs,
+    ):
         super().__init__(*args, **kargs)
         # STUDENT TODO
         # you should change the "queryset" in update_news_select to be None.
@@ -68,11 +84,12 @@ class UpdateNewsForm(forms.Form):
         #
         # This form is constructed in views.py. Modify this constructor to
         # accept the passed-in (filtered) queryset.
+        self.user_secrecy = user_secrecy
+        self.fields["update_news_select"].queryset = queryset
 
-        self.fields['update_news_select'].queryset = queryset
-    
     def clean(self):
         cleaned_data = super().clean()
+
         # STUDENT TODO
         # This is where newslisting update form is validated.
         # The "cleaned_data" is a dictionary with the data
@@ -81,11 +98,13 @@ class UpdateNewsForm(forms.Form):
         # form value. You need to update this method to
         # enforce the security policies related to tokens
         # and secrecy.
-        # Return a "ValidationError(<err msg>)" if something 
+        # Return a "ValidationError(<err msg>)" if something
         # is wrong
-        if cleaned_data['update_news_secrecy'] < cleaned_data['update_news_select'].secrecy:
-            print("VALIDATION ERROR: New secrecy lower than current secrecy for item", cleaned_data['update_news_select'])
+        if (
+            cleaned_data["update_news_secrecy"] != None
+            and cleaned_data["update_news_secrecy"] < self.user_secrecy
+        ):
+            print("VALIDATION ERROR: New secrecy lower than current secrecy for item")
             raise ValidationError("New secrecy lower than current secrecy for item")
-        print(cleaned_data)
-        
+
         return cleaned_data
