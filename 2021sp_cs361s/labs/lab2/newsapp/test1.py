@@ -106,9 +106,9 @@ class CrackerTestCase(TestCase):
         self.assertTrue(os.path.exists("db.sqlite3"))
         
         pws = {pw1:True, pw2: True, pw3: False}
-        for i in range(100):
-            pw0 = random_word(string.ascii_lowercase, random.randint(2,4))
-            pws[pw0] = True
+        # for i in range(100):
+        #     pw0 = random_word(string.ascii_lowercase, random.randint(2,4))
+        #     pws[pw0] = True
         for pw, should_pass in pws.items():
             salt = random_word(string.ascii_letters+string.digits, 12)
             kdf = PBKDF2HMAC(
