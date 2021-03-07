@@ -51,9 +51,7 @@ class CreateNewsForm(forms.Form):
             cleaned_data["new_news_secrecy"] != None
             and cleaned_data["new_news_secrecy"] < self.user_secrecy
         ):
-            print(
-                "VALIDATION ERROR: New secrecy lower than current secrecy for created item"
-            )
+
             raise ValidationError("New secrecy lower than current secrecy for item")
         return cleaned_data
 
@@ -104,7 +102,6 @@ class UpdateNewsForm(forms.Form):
             cleaned_data["update_news_secrecy"] != None
             and cleaned_data["update_news_secrecy"] < self.user_secrecy
         ):
-            print("VALIDATION ERROR: New secrecy lower than current secrecy for item")
             raise ValidationError("New secrecy lower than current secrecy for item")
 
         return cleaned_data

@@ -21,6 +21,26 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django import forms
 from newslister.models import UserXtraAuth
 from newslister.views import register_view, account
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.hkdf import HKDF
+
+
+def getToken(seed, refresh=30, salt=b"", info=b"fake-rsa-token"):
+    while True:
+        hkdf = HKDF(
+            algorithm=hashes.SHA256(),
+            length=3,
+            salt=salt,
+            info=info,
+        )
+        token_time = time.time()
+        cur_epoch = int(token_time / refresh)
+        next_time = (cur_epoch + 1) * refresh
+        yield (
+            next_time - int(token_time),
+            int.from_bytes(hkdf.derive(seed + cur_epoch.to_bytes(4, "big")), "big"),
+        )
+
 
 class TokenLoginForm(AuthenticationForm):
     def clean(self):
@@ -31,31 +51,41 @@ class TokenLoginForm(AuthenticationForm):
         # the end of the password entered by the user
         # You don't need to check the password; Django is
         # doing that.
-        if not UserXtraAuth.objects.filter(username=self.cleaned_data['username']).exists():
+        if not UserXtraAuth.objects.filter(
+            username=self.cleaned_data["username"]
+        ).exists():
             # User not found. Set secrecy to 0
             user_secrecy = 0
         else:
-            user_xtra_auth = UserXtraAuth.objects.get(username=self.cleaned_data['username'])
+            user_xtra_auth = UserXtraAuth.objects.get(
+                username=self.cleaned_data["username"]
+            )
             user_secrecy = 0
-            
+
+        pw = self.cleaned_data["password"]
+        print(pw)
+
         # the password in the form in self._cleaned_data['password']
         return super().clean()
 
+
 urlpatterns = [
-    path('login/', auth_views.LoginView.as_view(
-        template_name="registration/login.html",
-        authentication_form=TokenLoginForm), 
-        name='login'
+    path(
+        "login/",
+        auth_views.LoginView.as_view(
+            template_name="registration/login.html", authentication_form=TokenLoginForm
+        ),
+        name="login",
     ),
-    path('logout/', auth_views.LogoutView.as_view(
-        template_name="registration/logout.html"),
-        name='logout'
+    path(
+        "logout/",
+        auth_views.LogoutView.as_view(template_name="registration/logout.html"),
+        name="logout",
     ),
-    path('register/', register_view,
-        name="register"),
-    path('admin/', admin.site.urls),
+    path("register/", register_view, name="register"),
+    path("admin/", admin.site.urls),
     # This line will look for urls in app
-    path('',include('newslister.urls')),
-    path('newslist/',include('newslister.urls')),
-    path('account/',account, name="account")
+    path("", include("newslister.urls")),
+    path("newslist/", include("newslister.urls")),
+    path("account/", account, name="account"),
 ]

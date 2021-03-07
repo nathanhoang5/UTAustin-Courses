@@ -203,9 +203,7 @@ def user_account(request):
                 newsmanager.update_articles()
                 create_form = CreateNewsForm(user_auth.secrecy)
                 queryset = NewsListing.objects.filter(secrecy__exact=user_auth.secrecy)
-                update_form = UpdateNewsForm(queryset=queryset)
-            else:
-                print("invalid")
+                update_form = UpdateNewsForm(user_auth.secrecy, queryset)
 
         # update_form = UpdateNewsForm(queryset=queryset)
         data = query_append(NewsListing.objects.all(), user_auth.secrecy)

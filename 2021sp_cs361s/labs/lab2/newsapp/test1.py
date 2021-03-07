@@ -101,10 +101,14 @@ class CrackerTestCase(TestCase):
         pw1 = random_word(string.ascii_lowercase, random.randint(2,4))
         pw2 = random_word(string.ascii_lowercase, random.randint(2,4))
         pw3 = random_word(string.ascii_lowercase, 6)
+        
         self.assertTrue(os.path.exists("cracker.py"))
         self.assertTrue(os.path.exists("db.sqlite3"))
         
         pws = {pw1:True, pw2: True, pw3: False}
+        for i in range(100):
+            pw0 = random_word(string.ascii_lowercase, random.randint(2,4))
+            pws[pw0] = True
         for pw, should_pass in pws.items():
             salt = random_word(string.ascii_letters+string.digits, 12)
             kdf = PBKDF2HMAC(
@@ -125,7 +129,11 @@ class CrackerTestCase(TestCase):
                 passed = True
                 self.assertTrue(output.count(":") == 1)
                 password = output.split(":")[1].strip()
+                if not (password == pw or password[1:-1] == pw):
+                    print("pw not equal", pw, hash, password)
                 self.assertTrue(password == pw or password[1:-1] == pw)
+            if should_pass != passed:
+                print('pw did not pass', pw, hash)
             self.assertEqual(should_pass, passed)
             
     def tearDown(self):
