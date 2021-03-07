@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .models import NewsListing
+from .models import NewsListing, UserXtraAuth
 
 
 class UpdateUserForm(forms.Form):
@@ -23,6 +23,18 @@ class UpdateUserForm(forms.Form):
         # Return a "ValidationError(<err msg>)" if something
         # is wrong
         cleaned_data = super().clean()
+        update_user_select = cleaned_data["update_user_select"]
+        new_secrecy = cleaned_data["update_user_secrecy"]
+        new_token = cleaned_data["update_user_token"]
+        user_auth = UserXtraAuth.objects.get(username=update_user_select)
+        cur_secrecy = user_auth.secrecy
+        if ((cur_secrecy > 0) or (new_secrecy and new_secrecy > 0)) and not new_token:
+            raise ValidationError(
+                "New secrecy cannot be null for a user with secrecy > 0"
+            )
+        if user_auth.secrecy > new_secrecy:
+            raise ValidationError("New secrecy cannot be lower than current secrecy")
+
         return cleaned_data
 
 
